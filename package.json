@@ -1,41 +1,56 @@
 {
-    "name": "vscode-test-runner",
-    "displayName": "vscode-test-runner",
-    "description": "Easily run your tests with a key stroke.",
-    "version": "0.0.1",
-    "engines": {
-        "vscode": "^1.29.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "activationEvents": [
-        "onCommand:vsCodeTestRunner.runTestFile"
-    ],
-    "main": "./out/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "vsCodeTestRunner.runTestFile",
-                "title": "TestRunner: Run the current file"
-            }
-        ]
-    },
-    "scripts": {
-        "vscode:prepublish": "yarn run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "yarn run compile && node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "@types/mocha": "^2.2.42",
-        "@types/node": "^8.10.25",
-        "tslint": "^5.8.0",
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.21"
-    },
-    "dependencies": {
-        "prettier": "^1.15.2"
-    }
+  "name": "vscode-test-runner",
+  "displayName": "vscode-test-runner",
+  "description": "Easily run your tests with a key stroke.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.29.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:vsCodeTestRunner.testWholeFile",
+    "onCommand:vsCodeTestRunner.testLineNumber",
+    "onCommand:vsCodeTestRunner.destroyTerminal",
+    "onCommand:vsCodeTestRunner.hideTerminal"
+  ],
+  "main": "./out/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vsCodeTestRunner.testWholeFile",
+        "title": "TestRunner: test the entire file"
+      },
+      {
+        "command": "vsCodeTestRunner.testLineNumber",
+        "title": "TestRunner: test by line number"
+      },
+      {
+        "command": "vsCodeTestRunner.destroyTerminal",
+        "title": "TestRunner: destroy the terminal"
+      },
+      {
+        "command": "vsCodeTestRunner.hideTerminal",
+        "title": "TestRunner: hide the terminal"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "yarn run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^8.10.25",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.21"
+  },
+  "dependencies": {
+    "prettier": "^1.15.2"
+  }
 }

@@ -1,10 +1,18 @@
 import * as vscode from 'vscode';
-import { TestRunner } from './interface';
+import { TestRunner, TestRun } from './interface';
 import { getFilePathFromWorkspace } from '../utils';
 import * as fs from 'fs';
+import * as path from 'path';
 
 export default class Rspec implements TestRunner {
   eligibleExtensions = ['.rb'];
+
+  fileIsTestFile(file: vscode.TextEditor) {
+    const filePath = file.document.fileName;
+    const base = path.basename(filePath);
+
+    return base.includes('_spec');
+  }
 
   isEligible(file: vscode.TextEditor) {
     const gemFile = getFilePathFromWorkspace('Gemfile');
@@ -22,8 +30,15 @@ export default class Rspec implements TestRunner {
     return 'RSpec';
   }
 
-  commandForFile(file: vscode.TextEditor): string {
+  commandForFile(
+    type: TestRun,
+    file: vscode.TextEditor,
+    line?: number
+  ): string {
     // TODO: figure out if we need bundle exec or not?
-    return 'rspec' + ' ' + file.document.fileName;
+    const suffix =
+      line !== undefined && type === 'LineNumber' ? `:${line}` : '';
+    const fileName = type === 'EntireSuite' ? '' : file.document.fileName;
+    return 'rspec' + ' ' + fileName + suffix;
   }
 }

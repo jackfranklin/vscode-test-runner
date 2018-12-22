@@ -1,9 +1,13 @@
 import * as vscode from 'vscode';
+
+export type TestRun = 'WholeFile' | 'EntireSuite' | 'LineNumber';
+
 export interface TestRunner {
   eligibleExtensions: String[];
 
-  isEligible(file: vscode.TextEditor): Boolean;
+  isEligible(file: vscode.TextEditor): boolean;
+  fileIsTestFile(file: vscode.TextEditor): boolean;
   nameForHumans(): String;
 
-  commandForFile(file: vscode.TextEditor): string;
+  commandForFile(type: TestRun, file: vscode.TextEditor, line?: number): string;
 }
