@@ -1,5 +1,6 @@
 {
-  "name": "jackfranklin.vscode-test-runner",
+  "name": "vscode-test-runner",
+  "publisher": "jackfranklin",
   "displayName": "vscode-test-runner",
   "description": "Easily run your tests with a key stroke.",
   "version": "0.1.0",
