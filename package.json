@@ -2,7 +2,7 @@
   "name": "jackfranklin.vscode-test-runner",
   "displayName": "vscode-test-runner",
   "description": "Easily run your tests with a key stroke.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.29.0"
   },
