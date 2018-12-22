@@ -10,6 +10,14 @@
   "categories": [
     "Other"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jackfranklin/vscode-test-runner.git"
+  },
+  "homepage": "https://github.com/jackfranklin/vscode-test-runner",
+  "bugs": {
+    "url": "https://github.com/jackfranklin/vscode-test-runner/issues"
+  },
   "activationEvents": [
     "onCommand:vsCodeTestRunner.testWholeFile",
     "onCommand:vsCodeTestRunner.testLineNumber",
