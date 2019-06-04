@@ -5,21 +5,23 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 class Jest implements TestRunner {
-  eligibleExtensions = ['.js', '.jsx'];
+  eligibleExtensions = ['.js', '.jsx', '.ts', '.tsx'];
 
   supportedRunTypes: TestRun[] = ['WholeFile', 'EntireSuite'];
 
   fileIsTestFile(file: vscode.TextEditor) {
     const filePath = file.document.fileName;
-    console.log('got file path', filePath);
 
     const base = path.basename(filePath);
     const dir = path.dirname(filePath);
 
+    const potentialFileNames = this.eligibleExtensions
+      .map(ext => [`.test${ext}`, `.spec${ext}`])
+      .reduce((a, b) => a.concat(b), []);
+
     return (
       dir.includes('__test__') ||
-      base.includes('.test.js') ||
-      base.includes('.spec.js')
+      potentialFileNames.some(fileName => base.includes(fileName))
     );
   }
 

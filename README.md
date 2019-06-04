@@ -8,7 +8,7 @@ Smartly run your application's test at the press of a button. Can detect which c
 
 #### JS
 
-- Jest
+- Jest (for extensions: `.js`, `.jsx`, `.ts`, `.tsx`)
 
 #### Ruby
 
@@ -28,11 +28,11 @@ We also have some commands for hiding and destroying the terminal that vsCodeTes
 - `vsCodeTestRunner.destroyTerminal`: completely destroys the terminal that it created. Note that you pay a small cost to create one of these, so you usually don't want to do this that often.
 - `vsCodeTestRunner.hideTerminal`: this hides the terminal, but doesn't destroy it. This is normally what you want.
 
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
 ## Release Notes
+
+### 0.1.1
+
+- Allow the Jest runner to test TS files too.
 
 ### 0.1.0
 
