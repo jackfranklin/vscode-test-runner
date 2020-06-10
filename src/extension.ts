@@ -7,6 +7,7 @@ import { TestRunner, TestRun } from './runners/interface';
 
 import Jest from './runners/jest';
 import Rspec from './runners/rspec';
+import Manual from './runners/manual';
 import Context from './context';
 
 const activeRunners: TestRunner[] = [new Jest(), new Rspec()];
@@ -36,7 +37,6 @@ export function activate(context: vscode.ExtensionContext) {
   const hideTerminal = () => {
     if (terminal) {
       terminal.hide();
-      terminal = undefined;
     }
   };
 
@@ -55,7 +55,18 @@ export function activate(context: vscode.ExtensionContext) {
     runnerContext.update(file, line);
   };
 
+  const getAndSetManualCommand = async () => {
+    const result = await vscode.window.showInputBox({
+      placeHolder: 'Custom command to run',
+    });
+    if (result) runnerContext.setManualCommand(result);
+  }
+
   const startTestRun = (editor: vscode.TextEditor, type: TestRun): void => {
+
+    if (type === 'ManualCommand' && runnerContext.manualCommand) {
+      executeTestRun(type, new Manual(runnerContext.manualCommand), editor)
+    }
     const extension = path.extname(editor.document.fileName);
     const runners = activeRunners
       .filter(runner => runner.eligibleExtensions.indexOf(extension) > -1)
@@ -66,9 +77,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     if (firstRunner) {
       const isTestFile = firstRunner.fileIsTestFile(editor);
-
       const currentLine = editor.selection.start.line;
-
       const fileToTest = isTestFile ? editor : runnerContext.lastTestFile;
 
       if (!fileToTest) {
@@ -114,6 +123,31 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(testLineNumber);
+
+  let setManualCommand = vscode.commands.registerCommand(
+    'vsCodeTestRunner.setManualCommand',
+    () => {
+      if (vscode.window.activeTextEditor === undefined) {
+        return;
+      } else {
+        getAndSetManualCommand();
+      }
+    }
+  );
+
+  context.subscriptions.push(setManualCommand);
+
+  let runManualCommand = vscode.commands.registerCommand(
+    'vsCodeTestRunner.runManualCommand',
+    () => {
+      if (vscode.window.activeTextEditor === undefined) {
+        return;
+      } else {
+        startTestRun(vscode.window.activeTextEditor, 'ManualCommand');
+      }
+    }
+  );
+  context.subscriptions.push(runManualCommand);
 
   let destroyTerminalCmd = vscode.commands.registerCommand(
     'vsCodeTestRunner.destroyTerminal',
