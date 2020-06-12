@@ -67,6 +67,11 @@ export function activate(context: vscode.ExtensionContext) {
     if (type === 'ManualCommand' && runnerContext.manualCommand) {
       executeTestRun(type, new Manual(runnerContext.manualCommand), editor)
     }
+
+    if (typeof type !== 'string' && type.oneOffCommand) {
+      executeTestRun('ManualCommand', new Manual(type.oneOffCommand, true), editor)
+    }
+
     const extension = path.extname(editor.document.fileName);
     const runners = activeRunners
       .filter(runner => runner.eligibleExtensions.indexOf(extension) > -1)
@@ -121,33 +126,49 @@ export function activate(context: vscode.ExtensionContext) {
       }
     }
   );
-
   context.subscriptions.push(testLineNumber);
-
-  let setManualCommand = vscode.commands.registerCommand(
-    'vsCodeTestRunner.setManualCommand',
-    () => {
-      if (vscode.window.activeTextEditor === undefined) {
-        return;
-      } else {
-        getAndSetManualCommand();
-      }
-    }
-  );
-
-  context.subscriptions.push(setManualCommand);
 
   let runManualCommand = vscode.commands.registerCommand(
     'vsCodeTestRunner.runManualCommand',
-    () => {
+    async () => {
       if (vscode.window.activeTextEditor === undefined) {
         return;
       } else {
+        if (!runnerContext.manualCommand) {
+          await getAndSetManualCommand();
+        }
         startTestRun(vscode.window.activeTextEditor, 'ManualCommand');
       }
     }
   );
   context.subscriptions.push(runManualCommand);
+
+  let resetManualCommand = vscode.commands.registerCommand(
+    'vsCodeTestRunner.resetManualCommand',
+    async () => {
+      if (vscode.window.activeTextEditor === undefined) {
+        return;
+      } else {
+        await getAndSetManualCommand();
+      }
+    }
+  );
+  context.subscriptions.push(resetManualCommand);
+
+  let runOneOffCommand = vscode.commands.registerCommand(
+    'vsCodeTestRunner.runOneOffCommand',
+    async () => {
+      if (vscode.window.activeTextEditor === undefined) {
+        return;
+      } else {
+        const result = await vscode.window.showInputBox({
+          placeHolder: 'One off command to run',
+        });
+        if (result) startTestRun(vscode.window.activeTextEditor, { oneOffCommand: result })
+      }
+    }
+  );
+  context.subscriptions.push(runOneOffCommand);
 
   let destroyTerminalCmd = vscode.commands.registerCommand(
     'vsCodeTestRunner.destroyTerminal',

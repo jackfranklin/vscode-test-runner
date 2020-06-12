@@ -24,7 +24,8 @@
     "onCommand:vsCodeTestRunner.destroyTerminal",
     "onCommand:vsCodeTestRunner.hideTerminal",
     "onCommand:vsCodeTestRunner.runManualCommand",
-    "onCommand:vsCodeTestRunner.setManualCommand"
+    "onCommand:vsCodeTestRunner.runOneOffCommand",
+    "onCommand:vsCodeTestRunner.resetManualCommand"
   ],
   "main": "./out/extension",
   "contributes": {
@@ -47,11 +48,15 @@
       },
       {
         "command": "vsCodeTestRunner.runManualCommand",
-        "title": "TestRunner: run the manual command that has been set"
+        "title": "TestRunner: set & run the manual command that has been set"
       },
       {
-        "command": "vsCodeTestRunner.setManualCommand",
-        "title": "TestRunner: set the manual command to run"
+        "command": "vsCodeTestRunner.runOneOffCommand",
+        "title": "TestRunner: run a command once and don't remember it again."
+      },
+      {
+        "command": "vsCodeTestRunner.resetManualCommand",
+        "title": "TestRunner: change the manual command stored."
       }
     ]
   },

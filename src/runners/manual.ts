@@ -3,11 +3,13 @@ import { TestRunner, TestRun } from './interface';
 
 export default class Manual implements TestRunner {
   private manualCommand: string;
+  private oneOff: boolean;
 
   eligibleExtensions = ['.*'];
 
-  constructor(command: string) {
+  constructor(command: string, oneOff: boolean = false) {
     this.manualCommand = command;
+    this.oneOff = oneOff;
   }
 
   fileIsTestFile(file: vscode.TextEditor) {
@@ -19,7 +21,7 @@ export default class Manual implements TestRunner {
   }
 
   nameForHumans() {
-    return 'Manual command';
+    return this.oneOff? 'One-off command' : 'Manual command';
   }
 
   commandForFile(

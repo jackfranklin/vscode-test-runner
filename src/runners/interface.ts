@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export type TestRun = 'WholeFile' | 'EntireSuite' | 'LineNumber' | 'ManualCommand';
+export type TestRun = 'WholeFile' | 'EntireSuite' | 'LineNumber' | 'ManualCommand' | { oneOffCommand: string }
 
 export interface TestRunner {
   eligibleExtensions: String[];
