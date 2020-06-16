@@ -48,7 +48,7 @@
       },
       {
         "command": "vsCodeTestRunner.runManualCommand",
-        "title": "TestRunner: set & run the manual command that has been set"
+        "title": "TestRunner: run (and set if needed) the manual command."
       },
       {
         "command": "vsCodeTestRunner.runOneOffCommand",

@@ -63,13 +63,14 @@ export function activate(context: vscode.ExtensionContext) {
   }
 
   const startTestRun = (editor: vscode.TextEditor, type: TestRun): void => {
-
     if (type === 'ManualCommand' && runnerContext.manualCommand) {
       executeTestRun(type, new Manual(runnerContext.manualCommand), editor)
+      return;
     }
 
     if (typeof type !== 'string' && type.oneOffCommand) {
       executeTestRun('ManualCommand', new Manual(type.oneOffCommand, true), editor)
+      return;
     }
 
     const extension = path.extname(editor.document.fileName);
