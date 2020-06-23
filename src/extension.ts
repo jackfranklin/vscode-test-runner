@@ -14,10 +14,10 @@ const activeRunners: TestRunner[] = [new Jest(), new Rspec()];
 
 const runnerContext = new Context();
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext): void {
   let terminal: vscode.Terminal | undefined;
 
-  const getTerminal = (): { terminal: vscode.Terminal; isNew: Boolean } => {
+  const getTerminal = (): { terminal: vscode.Terminal; isNew: boolean } => {
     if (terminal) {
       return { isNew: false, terminal };
     } else {
@@ -60,16 +60,20 @@ export function activate(context: vscode.ExtensionContext) {
       placeHolder: 'Custom command to run',
     });
     if (result) runnerContext.setManualCommand(result);
-  }
+  };
 
   const startTestRun = (editor: vscode.TextEditor, type: TestRun): void => {
     if (type === 'ManualCommand' && runnerContext.manualCommand) {
-      executeTestRun(type, new Manual(runnerContext.manualCommand), editor)
+      executeTestRun(type, new Manual(runnerContext.manualCommand), editor);
       return;
     }
 
     if (typeof type !== 'string' && type.oneOffCommand) {
-      executeTestRun('ManualCommand', new Manual(type.oneOffCommand, true), editor)
+      executeTestRun(
+        'ManualCommand',
+        new Manual(type.oneOffCommand, true),
+        editor
+      );
       return;
     }
 
@@ -104,7 +108,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
   };
 
-  let testWholeFile = vscode.commands.registerCommand(
+  const testWholeFile = vscode.commands.registerCommand(
     'vsCodeTestRunner.testWholeFile',
     () => {
       if (vscode.window.activeTextEditor === undefined) {
@@ -117,7 +121,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(testWholeFile);
 
-  let testLineNumber = vscode.commands.registerCommand(
+  const testLineNumber = vscode.commands.registerCommand(
     'vsCodeTestRunner.testLineNumber',
     () => {
       if (vscode.window.activeTextEditor === undefined) {
@@ -129,7 +133,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(testLineNumber);
 
-  let runManualCommand = vscode.commands.registerCommand(
+  const runManualCommand = vscode.commands.registerCommand(
     'vsCodeTestRunner.runManualCommand',
     async () => {
       if (vscode.window.activeTextEditor === undefined) {
@@ -144,7 +148,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(runManualCommand);
 
-  let resetManualCommand = vscode.commands.registerCommand(
+  const resetManualCommand = vscode.commands.registerCommand(
     'vsCodeTestRunner.resetManualCommand',
     async () => {
       if (vscode.window.activeTextEditor === undefined) {
@@ -156,7 +160,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(resetManualCommand);
 
-  let runOneOffCommand = vscode.commands.registerCommand(
+  const runOneOffCommand = vscode.commands.registerCommand(
     'vsCodeTestRunner.runOneOffCommand',
     async () => {
       if (vscode.window.activeTextEditor === undefined) {
@@ -165,20 +169,23 @@ export function activate(context: vscode.ExtensionContext) {
         const result = await vscode.window.showInputBox({
           placeHolder: 'One off command to run',
         });
-        if (result) startTestRun(vscode.window.activeTextEditor, { oneOffCommand: result })
+        if (result)
+          startTestRun(vscode.window.activeTextEditor, {
+            oneOffCommand: result,
+          });
       }
     }
   );
   context.subscriptions.push(runOneOffCommand);
 
-  let destroyTerminalCmd = vscode.commands.registerCommand(
+  const destroyTerminalCmd = vscode.commands.registerCommand(
     'vsCodeTestRunner.destroyTerminal',
     destroyTerminal
   );
 
   context.subscriptions.push(destroyTerminalCmd);
 
-  let hideTerminalCmd = vscode.commands.registerCommand(
+  const hideTerminalCmd = vscode.commands.registerCommand(
     'vsCodeTestRunner.hideTerminal',
     hideTerminal
   );
