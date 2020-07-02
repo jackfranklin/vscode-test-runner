@@ -3,11 +3,11 @@
   "publisher": "jackfranklin",
   "displayName": "vscode-test-runner",
   "description": "Easily run your tests with a key stroke.",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "engines": {
     "vscode": "^1.45.1"
   },
-  "icon": "./icon.png",
+  "icon": "icon.png",
   "categories": [
     "Other"
   ],
